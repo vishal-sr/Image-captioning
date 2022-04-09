@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <div class="page">
+        <div class="front">
+            <h1>Image Caption Generator</h1>
+            <div class="form">
+                <form action="{{ url_for('captions') }}" method = "POST">
+                    <!-- <label for="image_link">Image Link: </label> -->
+                    <input type="text" name="image_link" id="image_link"><br>
+                    <input type="submit" value="Submit" id = "submit">
+                </form>
+                {% for p in pred %}
+                  <h3 class = "cap">{{ p }}</h3>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
