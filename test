@@ -1,0 +1,571 @@
+[
+
+![](https://www.gitbook.com/cdn-cgi/image/width=256,dpr=2,height=40,fit=contain,format=auto/https%3A%2F%2F2054553424-files.gitbook.io%2F~%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252FwMgyhtOGQYRuAgBCZCEa%252Flogo%252F6BX7CIMksy53JjvVPlus%252FGroup%2520371.png%3Falt%3Dmedia%26token%3De397ad6c-d6a5-4f5e-9104-60520ff2afcc)
+
+![](https://www.gitbook.com/cdn-cgi/image/width=256,dpr=2,height=30,fit=contain,format=auto/https%3A%2F%2F2054553424-files.gitbook.io%2F~%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252FwMgyhtOGQYRuAgBCZCEa%252Flogo%252F6BX7CIMksy53JjvVPlus%252FGroup%2520371.png%3Falt%3Dmedia%26token%3De397ad6c-d6a5-4f5e-9104-60520ff2afcc)
+
+](/)
+
+[Login](https://app.nimbleway.com/login)[Create an Account](https://www.nimbleway.com/contact/)
+
+Search…
+
+⌃K
+
+Links
+
+[
+
+Home
+
+](/)
+
+Nimble API
+
+[
+
+Nimble API Overview
+
+](/nimble-api/nimble-api-overview)
+
+[
+
+Nimble API Quick Start Guide
+
+](/nimble-api/nimble-api-quick-start-guide)
+
+[
+
+Web API
+
+](/nimble-api/web-api)
+
+[
+
+Real-time URL request
+
+](/nimble-api/web-api/real-time-url-request)
+
+[
+
+Page Interactions
+
+](/nimble-api/web-api/page-interactions)
+
+[
+
+Parsing Templates
+
+](/nimble-api/web-api/parsing-templates)
+
+[
+
+Delivery methods
+
+](/nimble-api/web-api/delivery-methods)
+
+[
+
+Batch Processing
+
+](/nimble-api/web-api/batch-processing)
+
+[
+
+Endpoints and Response Codes
+
+](/nimble-api/web-api/endpoints-and-response-codes)
+
+[
+
+SERP API
+
+](/nimble-api/serp-api)
+
+[
+
+Places API
+
+](/nimble-api/places-api)
+
+[
+
+E-commerce API
+
+](/nimble-api/e-commerce-api)
+
+Nimble Browser
+
+[
+
+Nimble Browser Overview
+
+](/nimble-browser/nimble-browser-overview)
+
+[
+
+Nimble Browser Quick Start Guide
+
+](/nimble-browser/nimble-browser-quick-start-guide)
+
+[
+
+Nimble Browser API Documentation
+
+](/nimble-browser/nimble-browser-api-documentation)
+
+Nimble IP
+
+[
+
+Nimble IP Overview
+
+](/nimble-ip/nimble-ip-overview)
+
+[
+
+Nimble IP Quick Start Guide
+
+](/nimble-ip/nimble-ip-quick-start-guide)
+
+[
+
+Backconnect Gateway
+
+](/nimble-ip/backconnect-gateway)
+
+[
+
+Admin API reference
+
+](/nimble-ip/admin-api-reference)
+
+General
+
+[
+
+FAQs
+
+](/general/faqs)
+
+[
+
+Powered By GitBook
+
+](https://www.gitbook.com/?utm_source=content&utm_medium=trademark&utm_campaign=wMgyhtOGQYRuAgBCZCEa)
+
+# Real-time URL request
+
+You'll need to generate an authentication token before you can send a request. See the [authentication section](/nimble-api/web-api#authentication) for a quick walkthrough.
+
+Public web data is collected by sending a request with a URL to the Web API. It's also possible to include custom headers, targets, or additional characters if the URL contains non-ASCII characters by supplying request parameters in a valid JSON format. To make a real-time request, use the following syntax:
+
+curl \-X POST 'https://api.webit.live/api/v1/realtime/web' \\
+
+\--header 'Authorization: Basic \[Your authentication token\]' \\
+
+\--header 'Content-Type: application/json' \\
+
+\--data-raw '{
+
+"url": "https://www.example.com",
+
+"method": "GET",
+
+"parse": false,
+
+"render": true,
+
+"country": "CA",
+
+"locale": "en-GB",
+
+"headers": {
+
+"Some-Extra-Header": "Some-Extra-Header"
+
+}
+
+}'
+
+Every request sent through Nimble API is automatically routed through Nimble IP - our premium proxy network!
+
+###
+
+**Request options**[](#request-options)
+
+Parameter
+
+Required
+
+Description
+
+url
+
+Required
+
+The page or resource to be fetched. Note: when using a URL with a query string, encode the URL and place it at the end of the query string.
+
+method
+
+Optional (default = GET)
+
+The method for requesting a URL from the target server.
+
+country
+
+Optional (default = all)
+
+Country used to access the target URL, use ISO Alpha-2 Country Codes i.e. US, DE, GB
+
+locale
+
+Optional (default = EN)
+
+String || LCID standard locale used for the URL request.
+
+headers\*
+
+Optional
+
+JSON with key/value structure to pass the required headers.
+
+format
+
+Optional (default = JSON)
+
+Enum: JSON | HTML - The data response format. HTML - in case of error, returns JSON with error message.
+
+parse
+
+Optional (default = false)
+
+Enum: true | false - True - the page's content will be parsed and returned in a JSON format. False - Response will include page headers and raw data (without parsing). When using parse = true, format must be set to “JSON”.
+
+render
+
+Optional (default = auto)
+
+Enum: true | false | auto - In case render = auto, Nimble WebAPI will render the page when it finds rendering necessary to load the page correctly.
+
+\* Please do not include any cookies when sending custom headers. Requests with custom headers that contain cookies will be blocked.
+
+###
+
+Sending POST requests to the Target Server[](#sending-post-requests-to-the-target-server)
+
+If you wish to send POST data with your request, such as when submitting a form, please use the following syntax:
+
+curl \-X POST 'https://api.webit.live/api/v1/realtime/web' \\
+
+\--header 'Authorization: Basic \[Your authorization token\]' \\
+
+\--header 'Content-Type: application/json' \\
+
+\--data-raw '{
+
+"url": "https://www.example.com",
+
+"method": "POST",
+
+"headers": {
+
+"Content-Type": "application/json",
+
+"Some-Extra-Header": "some-extra-header"
+
+},
+
+"body": {
+
+"a": 1,
+
+"b": 2
+
+}
+
+}'
+
+Please note that specifying a content-type header is required when submitting a POST request with data in the body.
+
+**Additional request options**
+
+Parameter
+
+Required
+
+Description
+
+method
+
+Required
+
+Use POST to send forms to the target site
+
+headers
+
+Optional
+
+JSON with key/value structure to pass the required headers
+
+body
+
+Optional
+
+JSON with key/value structure or string to pass needed payload
+
+###
+
+Response[](#response)
+
+**Headers**
+
+X-Task-ID: string
+
+**Payload examples:**
+
+If parsing was disabled or omitted in the request, the result data will be the raw HTML of the page you requested. If parsing was enabled, a JSON object with a parsed version of the page will be delivered, with the raw HTML included under the `html_content` property.
+
+**200 OK**
+
+{
+
+"status": "success",
+
+"html_content": string,
+
+"parsing": {
+
+"status" : "success",
+
+"entities": { },
+
+"total_entities_count": 0,
+
+"entities_count": { }
+
+}
+
+}
+
+**500 Error**
+
+{
+
+"status": "error",
+
+"task_id": "<task_id>",
+
+"msg": "can't download the query response - please try again"
+
+}
+
+**400 Input Error**
+
+{
+
+"status": "failed",
+
+"msg": error
+
+}
+
+###
+
+**Response Codes**[](#response-codes)
+
+Status
+
+Description
+
+200
+
+OK
+
+400
+
+The requested resource could not be reached
+
+401
+
+Unauthorized/Invalid Token
+
+500
+
+Internal service error
+
+501
+
+An error was encountered by the proxy service
+
+​
+
+​
+
+[
+
+Nimble API - Previous
+
+Web API
+
+](/nimble-api/web-api)[
+
+Next
+
+Page Interactions
+
+](/nimble-api/web-api/page-interactions)
+
+Last modified 15d ago
+
+Copy link
+
+On this page
+
+Request options
+
+Sending POST requests to the Target Server
+
+Response
+
+Response Codes
+
+[
+
+Home
+
+](/)
+
+Nimble API
+
+[
+
+Nimble API Overview
+
+](/nimble-api/nimble-api-overview)
+
+[
+
+Nimble API Quick Start Guide
+
+](/nimble-api/nimble-api-quick-start-guide)
+
+[
+
+Web API
+
+](/nimble-api/web-api)
+
+[
+
+Real-time URL request
+
+](/nimble-api/web-api/real-time-url-request)
+
+[
+
+Page Interactions
+
+](/nimble-api/web-api/page-interactions)
+
+[
+
+Parsing Templates
+
+](/nimble-api/web-api/parsing-templates)
+
+[
+
+Delivery methods
+
+](/nimble-api/web-api/delivery-methods)
+
+[
+
+Batch Processing
+
+](/nimble-api/web-api/batch-processing)
+
+[
+
+Endpoints and Response Codes
+
+](/nimble-api/web-api/endpoints-and-response-codes)
+
+[
+
+SERP API
+
+](/nimble-api/serp-api)
+
+[
+
+Places API
+
+](/nimble-api/places-api)
+
+[
+
+E-commerce API
+
+](/nimble-api/e-commerce-api)
+
+Nimble Browser
+
+[
+
+Nimble Browser Overview
+
+](/nimble-browser/nimble-browser-overview)
+
+[
+
+Nimble Browser Quick Start Guide
+
+](/nimble-browser/nimble-browser-quick-start-guide)
+
+[
+
+Nimble Browser API Documentation
+
+](/nimble-browser/nimble-browser-api-documentation)
+
+Nimble IP
+
+[
+
+Nimble IP Overview
+
+](/nimble-ip/nimble-ip-overview)
+
+[
+
+Nimble IP Quick Start Guide
+
+](/nimble-ip/nimble-ip-quick-start-guide)
+
+[
+
+Backconnect Gateway
+
+](/nimble-ip/backconnect-gateway)
+
+[
+
+Admin API reference
+
+](/nimble-ip/admin-api-reference)
+
+General
+
+[
+
+FAQs
+
+](/general/faqs)
+
+[
+
+Powered By GitBook
+
+](https://www.gitbook.com/?utm_source=content&utm_medium=trademark&utm_campaign=wMgyhtOGQYRuAgBCZCEa)
